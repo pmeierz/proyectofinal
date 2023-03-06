@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Loader from "./Loader";
 import Paginate from "./Paginate";
-
-let key_value = "nfBWYUQ9w35T0IWyddbovwnAOLPQAZSo";
+import { fetchGiphy, fetchGiphySearch } from "../api/giphy_api";
 
 const Giphy = () => {
   const [data, setData] = useState([]);
@@ -24,12 +22,7 @@ const Giphy = () => {
       setIsLoading(true);
 
       try {
-        const results = await axios("https://api.giphy.com/v1/gifs/trending", {
-          params: {
-            api_key: key_value,
-            limit: 100
-          }
-        });
+        const results = await fetchGiphy();
         
         setData(results.data.data);
       } catch (err) {
@@ -78,16 +71,9 @@ const Giphy = () => {
     setIsLoading(true);
 
     try {
-      const results = await axios("https://api.giphy.com/v1/gifs/search", {
-        params: {
-          api_key: key_value,
-          q: search,
-          limit: 100
-        }
-      });
-      setData(results.data.data);
+      const results = await fetchGiphySearch(search);
 
-      
+      setData(results.data.data);
 
 
     } catch (err) {
